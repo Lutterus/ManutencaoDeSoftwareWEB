@@ -1,0 +1,42 @@
+<html lang="pt">
+<head>
+  <title>Recuperar Senha</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script>
+  function validarSenha() {
+    senha1 = document.form.senha.value;
+    senha2 = document.form.novaSenha.value;
+
+    if (senha1 != senha2) {
+      alert("Erro! Senhas diferentes.")
+    } else if(senha1<1 || senha2<1){
+      alert("Erro! Senha inválida!")
+    }
+  }
+</script>
+<body>
+<div class="container">
+
+  <div class="form-sec">
+    <h4>Recuperar Senha</h4>
+
+    <form id="qryform" name="form" method="post" novalidate="novalidate">
+      <div class="form-group">
+        <label>Nova Senha:</label>
+        <input type="password" class="form-control" id="senha" name="senha" placeholder="Nova Senha">
+      </div>
+      <div class="form-group">
+        <label>Repetir Nova Senha:</label>
+        <input type="password" class="form-control" id="novaSenha" name="novaSenha" placeholder="Confirmar Nova Senha">
+      </div>
+      <button type="submit" class="btn btn-default" onClick="validarSenha()">Salvar</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
