@@ -1,24 +1,32 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import BootstrapVue from 'bootstrap-vue'
-import moment from 'moment'
-import VuejsDialog from "vuejs-dialog"
-import 'vuejs-dialog/dist/vuejs-dialog.min.css'
+import Vue from "vue";
+import App from "./App";
+import router from "./router";
+import BootstrapVue from "bootstrap-vue";
+import moment from "moment";
+import VuejsDialog from "vuejs-dialog";
+import VueMaterial from "vue-material";
+import Toasted from 'vue-toasted';
+// Import one of available themes
+import "vuejs-dialog/dist/vuejs-dialog.min.css";
+import "vue-material/dist/vue-material.min.css";
+import "vue-material/dist/theme/default.css";
 
 // Tell Vue to install the plugin.
-Vue.use(VuejsDialog)
-Vue.config.productionTip = false
+Vue.use(VuejsDialog);
+Vue.use(Toasted)
+Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
-Vue.use(require('vue-moment'), {
+Vue.use(VueMaterial);
+Vue.use(require("vue-moment"), {
   moment
-})
+});
+
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: "#app",
   router,
   components: { App },
-  template: '<App/>'
-})
+  template: "<App/>"
+});

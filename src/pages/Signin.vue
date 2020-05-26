@@ -1,57 +1,71 @@
 <template>
-<div class="containerA">
-  <div class="imgcontainerb">
-    <img src="https://s3-sa-east-1.amazonaws.com/projetos-artes/thumb%2F2018%2F07%2F12%2F13%2FLogo-244574_386583_130149500_1164078634.jpg" alt="Avatar" class="avatar">
-  </div>
-  <div class="container login-container" align="center">
-    <div class="row">
-    </div>
-    <div class="col-md-6 login-form-2">
-        <h3>Super Milhas</h3>
-        <form>
-            <div class="form-group">
-                <input v-model='username' type="text" class="form-control" placeholder="Seu Login" />
-            </div>
-            <div class="form-group">
-                <input v-model='password' type="password" class="form-control" placeholder="Sua Senha" />
-                <p v-if="erroLogin" class="text-sm text-danger"><small> Email ou senha incorretos, tente novamente!</small></p>
-            </div>
-            <div class="form-group">
-                <input  @click='logar()' type="submit" class="btnSubmit" value="Login" />
-            </div>
-            <div class="form-group blue">
-                ​
-                <a @click="forgetPassword()" class="blue ForgetPwd " value="Login">Esqueceu sua senha?</a>
-            </div>
-        </form>
-    </div>
-    </div>
-</div>
+  <div class="centered-container">
+    <md-content class="md-elevation-3">
+      <div class="title">
+        <img
+          src="https://s3-sa-east-1.amazonaws.com/projetos-artes/thumb%2F2018%2F07%2F12%2F13%2FLogo-244574_386583_130149500_1164078634.jpg"
+          alt="Avatar"
+          class="avatar"
+        />
+      </div>
 
+      <div class="form">
+        <md-field>
+          <label>E-mail</label>
+          <md-input v-model="username" autofocus></md-input>
+        </md-field>
+
+        <md-field md-has-password>
+          <label>Senha</label>
+          <md-input v-model="password" type="password"></md-input>
+        </md-field>
+      </div>
+
+      <div class="actions md-layout md-alignment-center-space-between">
+        <a @click="forgetPassword()" class="blue ForgetPwd" value="Login">Esqueceu sua senha?</a>
+        <md-button class="md-raised md-primary" @click="logar()" type="submit">Entrar</md-button>
+      </div>
+
+      <div class="loading-overlay" v-if="loading">
+        <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
+      </div>
+    </md-content>
+    <div class="background" />
+  </div>
 </template>
 
 <script>
 import DatabaseService from "@/service/DatabaseService";
+import Vue from "vue";
 
 export default {
   data() {
     return {
       username: "",
       password: "",
-      erroLogin: false
+      loading: false
     };
   },
   methods: {
     logar() {
-      DatabaseService.signIn(this.username, this.password)
-        .then(result => {
-          console.log(result)
-          this.$router.push("dashboard");
-        })
-        .catch(e => {
-          this.erroLogin = true
-          console.log(JSON.stringify(e))
-        });
+      this.loading = true;
+      setTimeout(() => {
+        DatabaseService.signIn(this.username, this.password)
+          .then(result => {
+            console.log(result);
+            this.$router.push("dashboard");
+          })
+          .catch(e => {
+            this.$toasted.show("E-mail ou senha incorretos", {
+              type: "error",
+              icon: "error_outline",
+              position: "top-center",
+              duration: 3000
+            });
+            this.loading = false;
+            console.log(JSON.stringify(e));
+          });
+      }, 2000);
     },
     forgetPassword() {
       this.$router.push("forgetPassword");
@@ -61,53 +75,73 @@ export default {
 </script>
 
 <style scoped>
-​ .login-form-2 {
-  padding: 5%;
-  background: #0a3158;
-  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+.centered-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 108vh;
 }
-
-.login-form-2 h3 {
+.title {
   text-align: center;
-  color: #fff;
 }
 
-.login-container form {
-  padding: 10%;
+.title > img {
+  margin-bottom: 16px;
+  height: 120px;
+  width: auto;
 }
 
-.btnSubmit {
-  width: 50%;
-  border-radius: 1rem;
-  padding: 1.5%;
-  border: none;
+.error-message {
+  position: absolute;
+  margin-top: -40px;
+}
+
+.actions > .md-button {
+  margin: 0;
+}
+
+.actions > a {
   cursor: pointer;
 }
 
-.login-form-2 .btnSubmit {
-  font-weight: 600;
-  color: #0a3158;
-  background-color: #fff;
+.form {
+  margin-bottom: 60px;
 }
 
-.login-form-2 {
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
+.background {
+  background: #e3e3e3;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
 }
 
-.blue {
-  color: #0a3158;
-  font-weight: 600;
-  text-decoration: none;
+.md-content {
+  z-index: 1;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  background: white;
+  border-radius: 5px;
 }
-.ForgetPwd {
-  cursor: pointer;
-}
-.containerA {
-  margin-top: 60px;
-  height: 100vh;
-  background-color: #dbdbdb;
-  padding: 60px;
+
+.loading-overlay {
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
