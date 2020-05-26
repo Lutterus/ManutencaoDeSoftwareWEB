@@ -2,11 +2,7 @@
   <div class="centered-container">
     <md-content class="md-elevation-3">
       <div class="title">
-        <img
-          src="https://s3-sa-east-1.amazonaws.com/projetos-artes/thumb%2F2018%2F07%2F12%2F13%2FLogo-244574_386583_130149500_1164078634.jpg"
-          alt="Avatar"
-          class="avatar"
-        />
+        <img src="https://i.ibb.co/1zz1wtR/super-Milhas.png" alt="Avatar" class="avatar" />
       </div>
 
       <div class="form">
@@ -80,7 +76,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 108vh;
+  height: 110vh;
 }
 .title {
   text-align: center;
@@ -88,7 +84,7 @@ export default {
 
 .title > img {
   margin-bottom: 16px;
-  height: 120px;
+  height: 150px;
   width: auto;
 }
 
@@ -127,7 +123,7 @@ export default {
   width: 100%;
   max-width: 400px;
   position: relative;
-  background: white;
+  background: #f7f7f7;
   border-radius: 5px;
 }
 
