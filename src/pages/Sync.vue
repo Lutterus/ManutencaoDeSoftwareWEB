@@ -2,6 +2,9 @@
   <div>
     <header>
       <div class="header-container">
+        <!-- <Link href="/">
+          <s.Logo src={logo} alt="Logo Unbox" title="Logo Unbox" />
+        </Link>-->
         <img
           src="https://i.ibb.co/89xJRGc/super-Milhas-removebg-preview.png"
           alt="Avatar"
@@ -9,6 +12,8 @@
           title="Super Milhas"
         />
 
+        <!-- <LogoutIcon title="Logout" /> -->
+        <!-- logout11111  class="btn btn-default" type="button" -->
         <button @click="logout()" class="btn btn-logout" type="button" title="Logout">
           <Logout />
         </button>
@@ -35,52 +40,11 @@
       </nav>
       <main class="main">
         <section class="layout-section">
-          <div class="filters-container">
-            <autocomplete :search="search" placeholder="Buscar..." aria-label="Buscar..."></autocomplete>
-          </div>
-          <div class="view-mode">
-            <button v-if="listMode" @click="toggleView()" class="btn-toggle">
-              <CardViewIcon />
-            </button>
-            <button v-else @click="toggleView()" class="btn-toggle">
-              <ListViewIcon />
-            </button>
-          </div>
-
-          <table-view v-if="listMode" />
-          <card-view v-else />
+          <span>Exemplo</span>
         </section>
       </main>
     </div>
   </div>
-  <!-- <div class="container">
-    <h2>SuperMilhas</h2>
-    ​
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="input-group">
-          <input v-model="searchInput" type="text" class="form-control" placeholder="Pesquisar...">
-          <span class="input-group-btn">
-            <button @click="search()" class="btn btn-default" type="button">Pesquisar</button>
-            <button @click="logout()" class="btn btn-default" type="button">Logout</button>
-          </span>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="table-cont">
-    <b-table if="b-table" striped hover :items="rows" :fields="fields">
-      <template slot="buttons" slot-scope="data">
-        <div @click="shouldDelete(data.item)" class="btn btn-danger btn-sm">Excluir</div>
-        <div @click="goEdit(data.item)" class="btn btn-primary btn-sm">Editar</div>
-      </template>
- </b-table>
-    </div>
-    <div class="pag-cont">
- <b-pagination align="center" @change="changePage" :limit="totalPages" :aria-controls="'b-table'" :total-rows="count" v-model="currentPage" :per-page="rows.length">
-  </b-pagination>
-    </div>
-  </div>-->
 </template>
 
 
@@ -89,11 +53,6 @@ import DatabaseService from "@/service/DatabaseService";
 import Logout from "../components/Icons/Logout.vue";
 import List from "../components/Icons/List.vue";
 import Sync from "../components/Icons/Sync.vue";
-import CardViewIcon from "../components/Icons/CardViewIcon.vue";
-import ListViewIcon from "../components/Icons/ListViewIcon.vue";
-import TableView from "../components/TableView.vue";
-import CardView from "../components/CardView.vue";
-import Autocomplete from "@trevoreyre/autocomplete-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -102,17 +61,11 @@ export default {
   components: {
     Logout,
     List,
-    Sync,
-    Autocomplete,
-    TableView,
-    CardView,
-    CardViewIcon,
-    ListViewIcon
+    Sync
   },
   data() {
     return {
       searchInput: "",
-      listMode: true,
       fields: [
         {
           key: "cod_milha",
@@ -158,9 +111,6 @@ export default {
       .catch(e => console.log(JSON.stringify(e)));
   },
   methods: {
-    toggleView() {
-      this.listMode = !this.listMode;
-    },
     logout() {
       this.$router.push({
         name: "Signin"
@@ -220,7 +170,7 @@ export default {
     changePage(page) {
       this.search(page);
     },
-    searchOLD(page = 1) {
+    search(page = 1) {
       let search = "all";
       if (this.searchInput) {
         search = this.searchInput;
@@ -234,15 +184,6 @@ export default {
           }
         })
         .catch(e => console.log(JSON.stringify(e)));
-    },
-    search(input) {
-      if (input.length < 1) {
-        return [];
-      }
-      // console.log(this.rows);
-      return this.rows.filter(row => {
-        return row.cod_milha.toLowerCase().startsWith(input.toLowerCase());
-      });
     }
   }
 };
@@ -340,27 +281,5 @@ export default {
 
 .active-item > svg {
   fill: #003e6c;
-}
-
-.filters-container {
-  width: auto;
-  height: 100px;
-  background-color: rgba(162, 102, 247, 0.05);
-  display: flex;
-  justify-content: flex-end;
-  padding: 0px 25px;
-  align-items: center;
-}
-
-.view-mode {
-  height: auto;
-  justify-content: flex-end;
-  display: flex;
-  padding: 10px 22px;
-}
-
-.btn-toggle {
-  border: none;
-  background: none;
 }
 </style>

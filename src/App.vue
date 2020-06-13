@@ -16,13 +16,18 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: -60px;
+  height: 100vh;
 }
 
 html,
 body {
   margin: 0;
   overflow-y: hidden;
+}
+
+.autocomplete-input {
+  padding: 5px 5px 5px 50px !important;
+  font-size: 14px;
+  background-color: #fff;
 }
 </style>

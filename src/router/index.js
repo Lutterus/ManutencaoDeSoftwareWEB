@@ -1,53 +1,60 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Signin from '@/pages/Signin'
-import Dash from '@/pages/Dash'
-import Edit from '@/pages/Edit'
-import ForgetPassword from '@/pages/ForgetPassword'
-import NewPassword from '@/pages/NewPassword'
+import Vue from "vue";
+import Router from "vue-router";
+import Signin from "@/pages/Signin";
+import Dash from "@/pages/Dash";
+import Sync from "@/pages/Sync";
+import Edit from "@/pages/Edit";
+import ForgetPassword from "@/pages/ForgetPassword";
+import NewPassword from "@/pages/NewPassword";
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
   routes: [
     {
-      path: '/',
-      name: 'Signin',
+      path: "/",
+      name: "Signin",
       component: Signin
     },
     {
-      path: '/dashboard',
-      name: 'Dash',
+      path: "/dashboard",
+      name: "Dash",
       component: Dash,
       props: true
     },
     {
-      path: '/edit/',
-      name: 'Edit',
+      path: "/example",
+      name: "Sync",
+      component: Sync,
+      props: true
+    },
+    {
+      path: "/edit/",
+      name: "Edit",
       component: Edit,
       props: true
     },
     {
-      path: '/newPassword/:token',
-      name: 'newPassword',
+      path: "/newPassword/:token",
+      name: "newPassword",
       component: NewPassword
     },
     {
-      path: '/forgetPassword/',
-      name: 'forgetPassword',
+      path: "/forgetPassword/",
+      name: "forgetPassword",
       component: ForgetPassword
     }
   ]
-})
+});
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if ('USER DOES NOT EXIST IN LOCAL STORAGE') {
+    if ("USER DOES NOT EXIST IN LOCAL STORAGE") {
       next({
-        path: '/',
+        path: "/",
         query: {
-          redirect: to.fullPath,
-        },
+          redirect: to.fullPath
+        }
       });
     } else {
       next();
@@ -55,6 +62,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-})
+});
 
-export default router
+export default router;
