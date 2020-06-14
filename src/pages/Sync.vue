@@ -39,9 +39,7 @@
         </ul>
       </nav>
       <main class="main">
-        <section class="layout-section">
-          <span>Exemplo</span>
-        </section>
+        <section class="layout-section"></section>
       </main>
     </div>
   </div>
@@ -194,7 +192,7 @@ export default {
   height: 75px;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.04);
   background-color: #ffffff;
-  padding: 0px 50px 0px 100px;
+  padding: 0px 50px 0px 25px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -221,7 +219,7 @@ export default {
 }
 
 .main {
-  width: calc(100% - 75px);
+  width: calc(100% - 60px);
   height: auto;
 }
 

@@ -8,12 +8,12 @@
       <div class="form">
         <md-field>
           <label>E-mail</label>
-          <md-input v-model="username" autofocus></md-input>
+          <md-input v-model="username" autofocus v-on:keyup.enter="logar"></md-input>
         </md-field>
 
         <md-field md-has-password>
           <label>Senha</label>
-          <md-input v-model="password" type="password"></md-input>
+          <md-input v-model="password" type="password" v-on:keyup.enter="logar"></md-input>
         </md-field>
       </div>
 
@@ -64,7 +64,7 @@ export default {
       }, 2000);
     },
     forgetPassword() {
-      this.$router.push("forgetPassword");
+      // this.$router.push("forgetPassword");
     }
   }
 };
@@ -76,7 +76,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 110vh;
+  height: 100vh;
 }
 .title {
   text-align: center;

@@ -47,8 +47,29 @@
             </button>
           </div>
 
-          <table-view v-if="listMode" />
-          <card-view v-else />
+          <div v-if="loading" class="loading-state">
+            <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+          </div>
+          <div v-else>
+            <transition name="fade" v-if="!rows.length || (filtering && !filteredRows.length)">
+              <div class="empty-state">
+                <md-icon class="empty-icon">search_off</md-icon>
+                <span class="empty-state-message">Nenhum registro encontrado...</span>
+              </div>
+            </transition>
+            <div v-else>
+              <table-view
+                v-if="listMode"
+                :items="filtering ? filteredRows : rows"
+                :shouldDelete="shouldDelete"
+              />
+              <card-view
+                v-else
+                :items="filtering ? filteredRows : rows"
+                :shouldDelete="shouldDelete"
+              />
+            </div>
+          </div>
         </section>
       </main>
     </div>
@@ -113,37 +134,13 @@ export default {
     return {
       searchInput: "",
       listMode: true,
-      fields: [
-        {
-          key: "cod_milha",
-          label: "Código"
-        },
-        {
-          key: "contaLogin",
-          label: "Login"
-        },
-        {
-          key: "programa.nome",
-          label: "Programa"
-        },
-        {
-          key: "quantidade",
-          label: "Quantidade"
-        },
-        {
-          key: "dt_expiracao",
-          label: "Data Expiração"
-        },
-        {
-          key: "usuario.telefone",
-          label: "Telefone"
-        },
-        "buttons"
-      ],
       rows: [],
+      filteredRows: [],
+      filtering: false,
       totalPages: 1,
       currentPage: 1,
-      count: 0
+      count: 0,
+      loading: true
     };
   },
   mounted() {
@@ -153,9 +150,13 @@ export default {
           this.rows = result.data.result;
           this.totalPages = result.data.pages;
           this.count = result.data.count;
+          this.loading = false;
         }
       })
-      .catch(e => console.log(JSON.stringify(e)));
+      .catch(e => {
+        console.log(JSON.stringify(e));
+        this.loading = false;
+      });
   },
   methods: {
     toggleView() {
@@ -188,14 +189,12 @@ export default {
     },
     shouldDelete(data) {
       this.$dialog
-        .confirm("Tem certeza que deseja deletar ")
+        .confirm("Tem certeza que deseja deletar ?")
         .then(dialog => {
           this.goDelete(data);
         })
         .catch(err => {
-          this.$dialog.alert(
-            `Desculpe, algum erro aconteceu!\n${JSON.stringify(err)}`
-          );
+          console.error(err);
         });
     },
     goDelete(data) {
@@ -237,12 +236,29 @@ export default {
     },
     search(input) {
       if (input.length < 1) {
-        return [];
+        this.filtering = false;
+        return this.rows;
       }
-      // console.log(this.rows);
-      return this.rows.filter(row => {
-        return row.cod_milha.toLowerCase().startsWith(input.toLowerCase());
+
+      this.filtering = true;
+      this.filteredRows = this.rows.filter(row => {
+        return (
+          row.contaLogin
+            .toString()
+            .toLowerCase()
+            .startsWith(input.toLowerCase()) ||
+          row.quantidade
+            .toString()
+            .toLowerCase()
+            .startsWith(input.toLowerCase()) ||
+          row.programa.nome
+            .toString()
+            .toLowerCase()
+            .startsWith(input.toLowerCase())
+        );
       });
+
+      // return filteredRows.map(item => item.contaLogin);
     }
   }
 };
@@ -253,7 +269,7 @@ export default {
   height: 75px;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.04);
   background-color: #ffffff;
-  padding: 0px 50px 0px 100px;
+  padding: 0px 50px 0px 25px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -280,7 +296,7 @@ export default {
 }
 
 .main {
-  width: calc(100% - 75px);
+  width: calc(100% - 60px);
   height: auto;
 }
 
@@ -356,11 +372,33 @@ export default {
   height: auto;
   justify-content: flex-end;
   display: flex;
-  padding: 10px 22px;
+  padding: 10px 22px 0px;
 }
 
 .btn-toggle {
   border: none;
   background: none;
+}
+
+.empty-state {
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.empty-icon {
+  font-size: 70px !important;
+  color: gray !important;
+  margin-bottom: 40px;
+}
+
+.empty-state-message {
+  color: gray !important;
+  font-size: 22px;
+}
+
+.loading-state {
+  padding-top: 80px;
 }
 </style>

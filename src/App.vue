@@ -29,5 +29,21 @@ body {
   padding: 5px 5px 5px 50px !important;
   font-size: 14px;
   background-color: #fff;
+  box-shadow: none !important;
+  border-radius: 5px;
+}
+
+.autocomplete-result-list {
+  display: none;
+}
+
+[data-position="above"] .autocomplete-result-list {
+  border-bottom: none;
+  border-radius: 5px;
+}
+
+[data-position="below"] .autocomplete-input[aria-expanded="true"] {
+  border-bottom: none;
+  border-radius: 5px;
 }
 </style>
